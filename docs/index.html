@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoLion SDK Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --python: #3572A5;
+            --c: #555555;
+            --background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            --card-bg: rgba(30, 30, 46, 0.7);
+        }
+
+        body {
+            background: var(--background);
+            color: var(--light);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(67, 97, 238, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: -1;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--accent), var(--success));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--light-gray);
+            max-width: 700px;
+            margin: 0 auto 25px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--warning);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin: 5px;
+        }
+
+        .badge-python {
+            background: var(--python);
+        }
+
+        .badge-c {
+            background: var(--c);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(67, 97, 238, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(67, 97, 238, 0.3);
+            border-color: var(--accent);
+        }
+
+        .card h3 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .card h3 i {
+            margin-right: 10px;
+            background: rgba(67, 97, 238, 0.2);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .card ul {
+            padding-left: 20px;
+            margin: 15px 0;
+        }
+
+        .card ul li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .card ul li::before {
+            content: '•';
+            color: var(--accent);
+            position: absolute;
+            left: -15px;
+        }
+
+        .highlight {
+            background: rgba(72, 149, 239, 0.15);
+            padding: 3px 6px;
+            border-radius: 4px;
+            color: var(--success);
+            font-family: monospace;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            margin: 50px 0 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--accent);
+            margin: 30px 0 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+            background: rgba(67, 97, 238, 0.2);
+            margin-right: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: var(--accent);
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .code-block {
+            background: rgba(10, 15, 30, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: var(--light-gray);
+        }
+
+        .code-header .filename {
+            font-weight: 600;
+        }
+
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .hl-keyword {
+            color: #ff79c6;
+        }
+
+        .hl-type {
+            color: #8be9fd;
+        }
+
+        .hl-function {
+            color: #50fa7b;
+        }
+
+        .hl-comment {
+            color: #6272a4;
+            font-style: italic;
+        }
+
+        .hl-string {
+            color: #f1fa8c;
+        }
+
+        .hl-var {
+            color: #bd93f9;
+        }
+
+        .func-desc {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 3px solid var(--success);
+        }
+
+        .func-desc h4 {
+            color: var(--success);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .params {
+            margin: 15px 0;
+        }
+
+        .params li {
+            display: flex;
+            margin-bottom: 8px;
+        }
+
+        .param-name {
+            width: 120px;
+            color: var(--accent);
+            font-family: monospace;
+        }
+
+        .param-desc {
+            flex: 1;
+        }
+
+        .language-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 1px solid rgba(67, 97, 238, 0.3);
+        }
+
+        .language-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .language-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+        }
+
+        .python-icon {
+            color: var(--python);
+        }
+
+        .c-icon {
+            color: var(--c);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px 0;
+            color: var(--light-gray);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, var(--accent), var(--success));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            header {
+                padding: 20px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CryptoLion SDK</h1>
+            <p class="tagline">Secure license management for desktop applications with C and Python bindings</p>
+            <div class="badge">Version 1.3.0</div>
+            <div class="badge badge-python">Python 3.6+</div>
+            <div class="badge badge-c">C99</div>
+        </header>
+
+        <section>
+            <h2 class="section-title">Core Features</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3><i class="fas fa-key"></i> License Management</h3>
+                    <p>Generate, validate, and manage software licenses with expiration control and activation status.</p>
+                    <ul>
+                        <li>Create licenses with custom durations</li>
+                        <li>Check license validity in real-time</li>
+                        <li>Track creation and expiration dates</li>
+                        <li>Activation status management</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-users"></i> User Management</h3>
+                    <p>Admin-controlled user system with role-based permissions and secure authentication.</p>
+                    <ul>
+                        <li>Create admin and regular users</li>
+                        <li>Secure password handling</li>
+                        <li>Role-based permissions</li>
+                        <li>User ID tracking</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-lock"></i> Security</h3>
+                    <p>Enterprise-grade security features to protect your licensing system.</p>
+                    <ul>
+                        <li>Secure API communication</li>
+                        <li>Memory-safe operations</li>
+                        <li>Proper resource cleanup</li>
+                        <li>Encrypted license keys</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">SDK Installation</h2>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="c">C SDK</div>
+                <div class="tab" data-tab="python">Python SDK</div>
+            </div>
+            
+            <div class="tab-content active" id="c-tab">
+                <div class="card">
+                    <h3><i class="fas fa-download"></i> C SDK Installation</h3>
+                    <p>Requirements: libcurl, cJSON</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">Terminal</span>
+                        </div>
+                        <pre># Clone the repository
+git clone https://github.com/cryptolion/sdk.git
+cd sdk/c
+
+# Build the library
+make
+
+# Install system-wide (optional)
+sudo make install
+
+# Link in your project
+gcc your_app.c -lcurl -lcjson -lcryptolion -o your_app</pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="python-tab">
+                <div class="card">
+                    <h3><i class="fas fa-download"></i> Python SDK Installation</h3>
+                    <p>Requirements: Python 3.6+, ctypes</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">Terminal</span>
+                        </div>
+                        <pre># Install via pip
+pip install cryptolion-sdk
+
+# Or from source
+git clone https://github.com/cryptolion/sdk.git
+cd sdk/python
+python setup.py install</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">Python SDK Usage</h2>
+            
+            <div class="language-section">
+                <div class="language-header">
+                    <i class="fab fa-python language-icon python-icon"></i>
+                    <h3>Python API</h3>
+                </div>
+                
+                <div class="func-desc">
+                    <h4>create_license()</h4>
+                    <p>Create a new license (Admin only). Returns a dictionary with license details.</p>
+                    <div class="params">
+                        <ul>
+                            <li>
+                                <span class="param-name">username</span>
+                                <span class="param-desc">Admin username</span>
+                            </li>
+                            <li>
+                                <span class="param-name">password</span>
+                                <span class="param-desc">Admin password</span>
+                            </li>
+                            <li>
+                                <span class="param-name">duration_days</span>
+                                <span class="param-desc">License duration in days</span>
+                            </li>
+                            <li>
+                                <span class="param-name">user_id</span>
+                                <span class="param-desc">Optional user ID to associate (default: 0)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">example.py</span>
+                        </div>
+                        <pre><span class="hl-keyword">from</span> cryptolion <span class="hl-keyword">import</span> create_license
+
+license = create_license(<span class="hl-string">"admin"</span>, <span class="hl-string">"securepass"</span>, <span class="hl-var">365</span>)
+print(<span class="hl-string">f"Created license: {license['license_key']}"</span>)
+print(<span class="hl-string">f"Expires at: {license['expires_at']}"</span>)</pre>
+                    </div>
+                </div>
+                
+                <div class="func-desc">
+                    <h4>check_license()</h4>
+                    <p>Check license validity. Returns a dictionary with license details.</p>
+                    <div class="params">
+                        <ul>
+                            <li>
+                                <span class="param-name">license_key</span>
+                                <span class="param-desc">License key to validate</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">example.py</span>
+                        </div>
+                        <pre><span class="hl-keyword">from</span> cryptolion <span class="hl-keyword">import</span> check_license
+
+license = check_license(<span class="hl-string">"LIC-12345-ABCDE"</span>)
+<span class="hl-keyword">if</span> license[<span class="hl-string">'is_active'</span>]:
+    print(<span class="hl-string">"License is valid!"</span>)
+<span class="hl-keyword">else</span>:
+    print(<span class="hl-string">"License expired or invalid"</span>)</pre>
+                    </div>
+                </div>
+                
+                <div class="func-desc">
+                    <h4>create_user()</h4>
+                    <p>Create a new user (Admin only). Returns True on success.</p>
+                    <div class="params">
+                        <ul>
+                            <li>
+                                <span class="param-name">admin_user</span>
+                                <span class="param-desc">Admin username</span>
+                            </li>
+                            <li>
+                                <span class="param-name">admin_pass</span>
+                                <span class="param-desc">Admin password</span>
+                            </li>
+                            <li>
+                                <span class="param-name">username</span>
+                                <span class="param-desc">New user's username</span>
+                            </li>
+                            <li>
+                                <span class="param-name">password</span>
+                                <span class="param-desc">New user's password</span>
+                            </li>
+                            <li>
+                                <span class="param-name">is_admin</span>
+                                <span class="param-desc">Admin privileges flag (default: False)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">example.py</span>
+                        </div>
+                        <pre><span class="hl-keyword">from</span> cryptolion <span class="hl-keyword">import</span> create_user
+
+success = create_user(<span class="hl-string">"admin"</span>, <span class="hl-string">"securepass"</span>, 
+                     <span class="hl-string">"newuser"</span>, <span class="hl-string">"userpass"</span>, <span class="hl-var">False</span>)
+<span class="hl-keyword">if</span> success:
+    print(<span class="hl-string">"User created successfully"</span>)</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">C SDK Usage</h2>
+            
+            <div class="language-section">
+                <div class="language-header">
+                    <i class="fas fa-c language-icon c-icon"></i>
+                    <h3>C API</h3>
+                </div>
+                
+                <div class="func-desc">
+                    <h4>create_license()</h4>
+                    <p>Create a new license (Admin only). Returns a License struct.</p>
+                    <div class="params">
+                        <ul>
+                            <li>
+                                <span class="param-name">username</span>
+                                <span class="param-desc">Admin username</span>
+                            </li>
+                            <li>
+                                <span class="param-name">password</span>
+                                <span class="param-desc">Admin password</span>
+                            </li>
+                            <li>
+                                <span class="param-name">duration_days</span>
+                                <span class="param-desc">License duration in days</span>
+                            </li>
+                            <li>
+                                <span class="param-name">user_id</span>
+                                <span class="param-desc">User ID to associate (0 for none)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">example.c</span>
+                        </div>
+                        <pre><span class="hl-comment">// Create a license valid for 1 year</span>
+<span class="hl-type">License</span> lic = <span class="hl-function">create_license</span>(<span class="hl-string">"admin"</span>, <span class="hl-string">"securepass"</span>, <span class="hl-var">365</span>, <span class="hl-var">0</span>);
+<span class="hl-function">printf</span>(<span class="hl-string">"Created license: %s\n"</span>, lic.license_key);
+<span class="hl-function">printf</span>(<span class="hl-string">"Expires at: %s\n"</span>, lic.expires_at);
+
+<span class="hl-comment">// Free memory when done</span>
+<span class="hl-function">free_license</span>(&lic);</pre>
+                    </div>
+                </div>
+                
+                <div class="func-desc">
+                    <h4>check_license()</h4>
+                    <p>Check license validity. Returns a License struct.</p>
+                    <div class="params">
+                        <ul>
+                            <li>
+                                <span class="param-name">license_key</span>
+                                <span class="param-desc">License key to validate</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">example.c</span>
+                        </div>
+                        <pre><span class="hl-type">License</span> lic = <span class="hl-function">check_license</span>(<span class="hl-string">"LIC-12345-ABCDE"</span>);
+<span class="hl-keyword">if</span>(lic.is_active) {
+    <span class="hl-function">printf</span>(<span class="hl-string">"Valid license until %s\n"</span>, lic.expires_at);
+} <span class="hl-keyword">else</span> {
+    <span class="hl-function">printf</span>(<span class="hl-string">"License is inactive\n"</span>);
+}
+<span class="hl-function">free_license</span>(&lic);</pre>
+                    </div>
+                </div>
+                
+                <div class="func-desc">
+                    <h4>create_user()</h4>
+                    <p>Create a new user (Admin only). Returns 1 on success.</p>
+                    <div class="params">
+                        <ul>
+                            <li>
+                                <span class="param-name">admin_user</span>
+                                <span class="param-desc">Admin username</span>
+                            </li>
+                            <li>
+                                <span class="param-name">admin_pass</span>
+                                <span class="param-desc">Admin password</span>
+                            </li>
+                            <li>
+                                <span class="param-name">username</span>
+                                <span class="param-desc">New user's username</span>
+                            </li>
+                            <li>
+                                <span class="param-name">password</span>
+                                <span class="param-desc">New user's password</span>
+                            </li>
+                            <li>
+                                <span class="param-name">is_admin</span>
+                                <span class="param-desc">Admin privileges flag (1 or 0)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">example.c</span>
+                        </div>
+                        <pre><span class="hl-keyword">int</span> result = <span class="hl-function">create_user</span>(<span class="hl-string">"admin"</span>, <span class="hl-string">"securepass"</span>,
+                          <span class="hl-string">"newuser"</span>, <span class="hl-string">"userpass"</span>, <span class="hl-var">0</span>);
+                          
+<span class="hl-keyword">if</span>(result) {
+    <span class="hl-function">printf</span>(<span class="hl-string">"User created successfully\n"</span>);
+} <span class="hl-keyword">else</span> {
+    <span class="hl-function">printf</span>(<span class="hl-string">"User creation failed\n"</span>);
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">Security Best Practices</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3><i class="fas fa-shield-alt"></i> Credential Security</h3>
+                    <ul>
+                        <li>Never hardcode credentials in your application</li>
+                        <li>Use environment variables for sensitive data</li>
+                        <li>Implement secure credential storage mechanisms</li>
+                        <li>Rotate API credentials regularly</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-memory"></i> Memory Management</h3>
+                    <ul>
+                        <li>Always call <span class="highlight">free_license()</span> after use</li>
+                        <li>Check for NULL pointers before use</li>
+                        <li>Validate all input parameters</li>
+                        <li>Handle memory allocation failures gracefully</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-network-wired"></i> Network Security</h3>
+                    <ul>
+                        <li>Always use HTTPS for API communication</li>
+                        <li>Verify server certificates</li>
+                        <li>Implement request timeout handling</li>
+                        <li>Use secure connection protocols (TLS 1.2+)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">Python SDK Structure</h2>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">cryptolion.py</span>
+                </div>
+                <pre><span class="hl-keyword">import</span> ctypes
+<span class="hl-keyword">import</span> os
+<span class="hl-keyword">import</span> sys
+
+<span class="hl-comment"># Define the License structure</span>
+<span class="hl-keyword">class</span> License(ctypes.Structure):
+    _fields_ = [
+        (<span class="hl-string">"license_key"</span>, ctypes.c_char_p),
+        (<span class="hl-string">"created_at"</span>, ctypes.c_char_p),
+        (<span class="hl-string">"expires_at"</span>, ctypes.c_char_p),
+        (<span class="hl-string">"is_active"</span>, ctypes.c_int)
+    ]
+
+<span class="hl-comment"># Load the shared library</span>
+<span class="hl-keyword">def</span> <span class="hl-function">load_library</span>():
+    <span class="hl-comment"># Platform-specific library loading</span>
+    <span class="hl-keyword">if</span> sys.platform.startswith(<span class="hl-string">'win'</span>):
+        lib_name = <span class="hl-string">"LibLion64.dll"</span>
+    <span class="hl-keyword">elif</span> sys.platform == <span class="hl-string">'darwin'</span>:
+        lib_name = <span class="hl-string">"LibLion.dylib"</span>
+    <span class="hl-keyword">else</span>:
+        lib_name = <span class="hl-string">"LibLion.so"</span>
+    
+    <span class="hl-keyword">try</span>:
+        <span class="hl-keyword">return</span> ctypes.CDLL(lib_name)
+    <span class="hl-keyword">except</span> OSError:
+        lib_path = os.path.join(os.path.dirname(__file__), lib_name)
+        <span class="hl-keyword">return</span> ctypes.CDLL(lib_path)
+
+lib = <span class="hl-function">load_library</span>()
+
+<span class="hl-comment"># Set function prototypes</span>
+lib.<span class="hl-function">create_license</span>.argtypes = [ctypes.c_char_p, ctypes.c_char_p, 
+                               ctypes.c_int, ctypes.c_int]
+lib.<span class="hl-function">create_license</span>.restype = License
+
+<span class="hl-comment"># Python wrapper for create_license</span>
+<span class="hl-keyword">def</span> <span class="hl-function">create_license</span>(username, password, duration_days, user_id=0):
+    lic = lib.<span class="hl-function">create_license</span>(
+        username.<span class="hl-function">encode</span>(<span class="hl-string">'utf-8'</span>),
+        password.<span class="hl-function">encode</span>(<span class="hl-string">'utf-8'</span>),
+        duration_days,
+        user_id
+    )
+    
+    result = {
+        <span class="hl-string">'license_key'</span>: lic.license_key.<span class="hl-function">decode</span>() <span class="hl-keyword">if</span> lic.license_key <span class="hl-keyword">else</span> <span class="hl-keyword">None</span>,
+        <span class="hl-string">'created_at'</span>: lic.created_at.<span class="hl-function">decode</span>() <span class="hl-keyword">if</span> lic.created_at <span class="hl-keyword">else</span> <span class="hl-keyword">None</span>,
+        <span class="hl-string">'expires_at'</span>: lic.expires_at.<span class="hl-function">decode</span>() <span class="hl-keyword">if</span> lic.expires_at <span class="hl-keyword">else</span> <span class="hl-keyword">None</span>,
+        <span class="hl-string">'is_active'</span>: <span class="hl-keyword">bool</span>(lic.is_active)
+    }
+    
+    <span class="hl-comment"># Free C memory</span>
+    lib.<span class="hl-function">free_license</span>(ctypes.<span class="hl-function">byref</span>(lic))
+    <span class="hl-keyword">return</span> result</pre>
+            </div>
+        </section>
+
+        <footer>
+            <div class="logo">CryptoLion</div>
+            <p>Secure License Management System | Version 1.3.0</p>
+            <p>© 2023 CryptoLion. All rights reserved. | docs.cryptolion.com</p>
+        </footer>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and content
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
