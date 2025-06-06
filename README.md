@@ -1,6 +1,6 @@
 # CryptoLion SDK - Secure License Management
 
-![CryptoLion Logo](https://via.placeholder.com/150/4361ee/ffffff?text=CL)  
+![CryptoLion Logo](./logo.svg)  
 [![Python Version](https://img.shields.io/badge/python-3.6%2B-blue.svg)](https://www.python.org/)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 
