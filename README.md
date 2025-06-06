@@ -1,2 +1,2 @@
-# CryptLionSDK
-CrypLion SDK for Python and C License Management
+# CryptoLionSDK
+CryptoLion SDK for Python and C License Management
