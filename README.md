@@ -70,8 +70,8 @@ int main() {
 
 ## Documentation
 
-📚 Comprehensive documentation is available at:  
-[https://cryptolion.github.io/sdk/docs](https://cryptolion.github.io/sdk/docs)
+📚 Comprehensive documentation is available at:
+[https://fenrirsec.github.io/CryptoLionSDK/](https://fenrirsec.github.io/CryptoLionSDK/)
 
 Key documentation sections include:
 - API Reference for both C and Python
