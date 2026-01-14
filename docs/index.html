@@ -314,6 +314,34 @@
             color: var(--c);
         }
 
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .api-table th {
+            background: rgba(67, 97, 238, 0.3);
+            padding: 15px;
+            text-align: left;
+        }
+
+        .api-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .api-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .api-table tr:hover {
+            background: rgba(72, 149, 239, 0.15);
+        }
+
         footer {
             text-align: center;
             margin-top: 50px;
@@ -344,6 +372,11 @@
             header {
                 padding: 20px 10px;
             }
+            
+            .api-table {
+                display: block;
+                overflow-x: auto;
+            }
         }
     </style>
 </head>
@@ -358,221 +391,271 @@
         </header>
 
         <section>
-            <h2 class="section-title">Core Features</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3><i class="fas fa-key"></i> License Management</h3>
-                    <p>Generate, validate, and manage software licenses with expiration control and activation status.</p>
-                    <ul>
-                        <li>Create licenses with custom durations</li>
-                        <li>Check license validity in real-time</li>
-                        <li>Track creation and expiration dates</li>
-                        <li>Activation status management</li>
-                    </ul>
-                </div>
-                
-                <div class="card">
-                    <h3><i class="fas fa-users"></i> User Management</h3>
-                    <p>Admin-controlled user system with role-based permissions and secure authentication.</p>
-                    <ul>
-                        <li>Create admin and regular users</li>
-                        <li>Secure password handling</li>
-                        <li>Role-based permissions</li>
-                        <li>User ID tracking</li>
-                    </ul>
-                </div>
-                
-                <div class="card">
-                    <h3><i class="fas fa-lock"></i> Security</h3>
-                    <p>Enterprise-grade security features to protect your licensing system.</p>
-                    <ul>
-                        <li>Secure API communication</li>
-                        <li>Memory-safe operations</li>
-                        <li>Proper resource cleanup</li>
-                        <li>Encrypted license keys</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title">SDK Installation</h2>
-            
-            <div class="tabs">
-                <div class="tab active" data-tab="c">C SDK</div>
-                <div class="tab" data-tab="python">Python SDK</div>
-            </div>
-            
-            <div class="tab-content active" id="c-tab">
-                <div class="card">
-                    <h3><i class="fas fa-download"></i> C SDK Installation</h3>
-                    <p>Requirements: libcurl, cJSON</p>
-                    <div class="code-block">
-                        <div class="code-header">
-                            <span class="filename">Terminal</span>
-                        </div>
-                        <pre># Clone the repository
-git clone https://github.com/cryptolion/sdk.git
-cd sdk/c
-
-# Build the library
-make
-
-# Install system-wide (optional)
-sudo make install
-
-# Link in your project
-gcc your_app.c -lcurl -lcjson -lcryptolion -o your_app</pre>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="tab-content" id="python-tab">
-                <div class="card">
-                    <h3><i class="fas fa-download"></i> Python SDK Installation</h3>
-                    <p>Requirements: Python 3.6+, ctypes</p>
-                    <div class="code-block">
-                        <div class="code-header">
-                            <span class="filename">Terminal</span>
-                        </div>
-                        <pre># Install via pip
-pip install cryptolion-sdk
-
-# Or from source
-git clone https://github.com/cryptolion/sdk.git
-cd sdk/python
-python setup.py install</pre>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title">Python SDK Usage</h2>
-            
-            <div class="language-section">
-                <div class="language-header">
-                    <i class="fab fa-python language-icon python-icon"></i>
-                    <h3>Python API</h3>
-                </div>
-                
-                <div class="func-desc">
-                    <h4>create_license()</h4>
-                    <p>Create a new license (Admin only). Returns a dictionary with license details.</p>
-                    <div class="params">
-                        <ul>
-                            <li>
-                                <span class="param-name">username</span>
-                                <span class="param-desc">Admin username</span>
-                            </li>
-                            <li>
-                                <span class="param-name">password</span>
-                                <span class="param-desc">Admin password</span>
-                            </li>
-                            <li>
-                                <span class="param-name">duration_days</span>
-                                <span class="param-desc">License duration in days</span>
-                            </li>
-                            <li>
-                                <span class="param-name">user_id</span>
-                                <span class="param-desc">Optional user ID to associate (default: 0)</span>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="code-block">
-                        <div class="code-header">
-                            <span class="filename">example.py</span>
-                        </div>
-                        <pre><span class="hl-keyword">from</span> cryptolion <span class="hl-keyword">import</span> create_license
-
-license = create_license(<span class="hl-string">"admin"</span>, <span class="hl-string">"securepass"</span>, <span class="hl-var">365</span>)
-print(<span class="hl-string">f"Created license: {license['license_key']}"</span>)
-print(<span class="hl-string">f"Expires at: {license['expires_at']}"</span>)</pre>
-                    </div>
-                </div>
-                
-                <div class="func-desc">
-                    <h4>check_license()</h4>
-                    <p>Check license validity. Returns a dictionary with license details.</p>
-                    <div class="params">
-                        <ul>
-                            <li>
-                                <span class="param-name">license_key</span>
-                                <span class="param-desc">License key to validate</span>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="code-block">
-                        <div class="code-header">
-                            <span class="filename">example.py</span>
-                        </div>
-                        <pre><span class="hl-keyword">from</span> cryptolion <span class="hl-keyword">import</span> check_license
-
-license = check_license(<span class="hl-string">"LIC-12345-ABCDE"</span>)
-<span class="hl-keyword">if</span> license[<span class="hl-string">'is_active'</span>]:
-    print(<span class="hl-string">"License is valid!"</span>)
-<span class="hl-keyword">else</span>:
-    print(<span class="hl-string">"License expired or invalid"</span>)</pre>
-                    </div>
-                </div>
-                
-                <div class="func-desc">
-                    <h4>create_user()</h4>
-                    <p>Create a new user (Admin only). Returns True on success.</p>
-                    <div class="params">
-                        <ul>
-                            <li>
-                                <span class="param-name">admin_user</span>
-                                <span class="param-desc">Admin username</span>
-                            </li>
-                            <li>
-                                <span class="param-name">admin_pass</span>
-                                <span class="param-desc">Admin password</span>
-                            </li>
-                            <li>
-                                <span class="param-name">username</span>
-                                <span class="param-desc">New user's username</span>
-                            </li>
-                            <li>
-                                <span class="param-name">password</span>
-                                <span class="param-desc">New user's password</span>
-                            </li>
-                            <li>
-                                <span class="param-name">is_admin</span>
-                                <span class="param-desc">Admin privileges flag (default: False)</span>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="code-block">
-                        <div class="code-header">
-                            <span class="filename">example.py</span>
-                        </div>
-                        <pre><span class="hl-keyword">from</span> cryptolion <span class="hl-keyword">import</span> create_user
-
-success = create_user(<span class="hl-string">"admin"</span>, <span class="hl-string">"securepass"</span>, 
-                     <span class="hl-string">"newuser"</span>, <span class="hl-string">"userpass"</span>, <span class="hl-var">False</span>)
-<span class="hl-keyword">if</span> success:
-    print(<span class="hl-string">"User created successfully"</span>)</pre>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title">C SDK Usage</h2>
+            <h2 class="section-title">Complete C API Reference</h2>
             
             <div class="language-section">
                 <div class="language-header">
                     <i class="fas fa-c language-icon c-icon"></i>
-                    <h3>C API</h3>
+                    <h3>C API Functions</h3>
+                </div>
+                
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Function</th>
+                            <th>Description</th>
+                            <th>Parameters</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="hl-function">write_callback</span></td>
+                            <td>Memory callback for libcurl to handle response data</td>
+                            <td>
+                                <span class="hl-var">contents</span>: Pointer to data<br>
+                                <span class="hl-var">size</span>: Size of each element<br>
+                                <span class="hl-var">nmemb</span>: Number of elements<br>
+                                <span class="hl-var">userp</span>: User pointer to MemoryBuffer
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="hl-function">init_curl</span></td>
+                            <td>Initializes a libcurl session with common options</td>
+                            <td>
+                                <span class="hl-var">url</span>: API endpoint URL<br>
+                                <span class="hl-var">buf</span>: MemoryBuffer for response<br>
+                                <span class="hl-var">username</span>: Authentication username<br>
+                                <span class="hl-var">password</span>: Authentication password
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="hl-function">parse_license</span></td>
+                            <td>Parses License structure from JSON response</td>
+                            <td>
+                                <span class="hl-var">json</span>: cJSON object containing license data
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="hl-function">create_license</span></td>
+                            <td>Creates a new license (Admin only)</td>
+                            <td>
+                                <span class="hl-var">username</span>: Admin username<br>
+                                <span class="hl-var">password</span>: Admin password<br>
+                                <span class="hl-var">duration_days</span>: License duration in days<br>
+                                <span class="hl-var">user_id</span>: Optional user ID to associate
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="hl-function">check_license</span></td>
+                            <td>Checks the validity of a license key</td>
+                            <td>
+                                <span class="hl-var">license_key</span>: License key to validate
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="hl-function">create_user</span></td>
+                            <td>Creates a new user (Admin only)</td>
+                            <td>
+                                <span class="hl-var">admin_user</span>: Admin username<br>
+                                <span class="hl-var">admin_pass</span>: Admin password<br>
+                                <span class="hl-var">username</span>: New user's username<br>
+                                <span class="hl-var">password</span>: New user's password<br>
+                                <span class="hl-var">is_admin</span>: Admin privileges flag
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="hl-function">free_license</span></td>
+                            <td>Releases memory allocated for a License object</td>
+                            <td>
+                                <span class="hl-var">lic</span>: Pointer to License structure
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="language-section">
+                <div class="language-header">
+                    <i class="fas fa-c language-icon c-icon"></i>
+                    <h3>C API Structures</h3>
+                </div>
+                
+                <div class="func-desc">
+                    <h4>License Structure</h4>
+                    <p>Represents a software license with its properties.</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">license.h</span>
+                        </div>
+                        <pre><span class="hl-keyword">typedef</span> <span class="hl-keyword">struct</span> {
+    <span class="hl-type">char</span>* <span class="hl-var">license_key</span>;    <span class="hl-comment">// Unique license identifier</span>
+    <span class="hl-type">char</span>* <span class="hl-var">created_at</span>;     <span class="hl-comment">// Creation timestamp (ISO 8601 format)</span>
+    <span class="hl-type">char</span>* <span class="hl-var">expires_at</span>;     <span class="hl-comment">// Expiration timestamp (ISO 8601 format)</span>
+    <span class="hl-type">int</span> <span class="hl-var">is_active</span>;        <span class="hl-comment">// Activation status (1 = active, 0 = inactive)</span>
+} <span class="hl-type">License</span>;</pre>
+                    </div>
+                </div>
+                
+                <div class="func-desc">
+                    <h4>User Structure</h4>
+                    <p>Represents a system user with permissions.</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">user.h</span>
+                        </div>
+                        <pre><span class="hl-keyword">typedef</span> <span class="hl-keyword">struct</span> {
+    <span class="hl-type">int</span> <span class="hl-var">id</span>;               <span class="hl-comment">// Unique user ID</span>
+    <span class="hl-type">char</span>* <span class="hl-var">username</span>;       <span class="hl-comment">// Unique username</span>
+    <span class="hl-type">int</span> <span class="hl-var">is_admin</span>;         <span class="hl-comment">// Admin privileges (1 = admin, 0 = regular)</span>
+} <span class="hl-type">User</span>;</pre>
+                    </div>
+                </div>
+                
+                <div class="func-desc">
+                    <h4>MemoryBuffer Structure</h4>
+                    <p>Used for storing HTTP responses from API calls.</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">buffer.h</span>
+                        </div>
+                        <pre><span class="hl-keyword">typedef</span> <span class="hl-keyword">struct</span> {
+    <span class="hl-type">char</span>* <span class="hl-var">ptr</span>;            <span class="hl-comment">// Pointer to response data</span>
+    <span class="hl-type">size_t</span> <span class="hl-var">len</span>;          <span class="hl-comment">// Length of response data</span>
+} <span class="hl-type">MemoryBuffer</span>;</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">Detailed C Function Reference</h2>
+            
+            <div class="language-section">
+                <div class="func-desc">
+                    <h4>write_callback()</h4>
+                    <p>Memory callback function for libcurl to handle response data.</p>
+                    <div class="params">
+                        <ul>
+                            <li>
+                                <span class="param-name">contents</span>
+                                <span class="param-desc">Pointer to the delivered data</span>
+                            </li>
+                            <li>
+                                <span class="param-name">size</span>
+                                <span class="param-desc">Size of each element (always 1)</span>
+                            </li>
+                            <li>
+                                <span class="param-name">nmemb</span>
+                                <span class="param-desc">Number of bytes in the buffer</span>
+                            </li>
+                            <li>
+                                <span class="param-name">userp</span>
+                                <span class="param-desc">Pointer to MemoryBuffer structure</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">curl_utils.c</span>
+                        </div>
+                        <pre><span class="hl-comment">// Memory callback for libcurl</span>
+<span class="hl-keyword">static</span> <span class="hl-type">size_t</span> <span class="hl-function">write_callback</span>(<span class="hl-keyword">void</span> *<span class="hl-var">contents</span>, <span class="hl-type">size_t</span> <span class="hl-var">size</span>, <span class="hl-type">size_t</span> <span class="hl-var">nmemb</span>, <span class="hl-keyword">void</span> *<span class="hl-var">userp</span>) {
+    <span class="hl-type">size_t</span> <span class="hl-var">realsize</span> = <span class="hl-var">size</span> * <span class="hl-var">nmemb</span>;
+    <span class="hl-type">MemoryBuffer</span> *<span class="hl-var">mem</span> = (<span class="hl-type">MemoryBuffer</span> *)<span class="hl-var">userp</span>;
+    
+    <span class="hl-type">char</span> *<span class="hl-var">ptr</span> = <span class="hl-function">realloc</span>(<span class="hl-var">mem</span>-><span class="hl-var">ptr</span>, <span class="hl-var">mem</span>-><span class="hl-var">len</span> + <span class="hl-var">realsize</span> + 1);
+    <span class="hl-keyword">if</span>(!<span class="hl-var">ptr</span>) <span class="hl-keyword">return</span> 0;
+    
+    <span class="hl-var">mem</span>-><span class="hl-var">ptr</span> = <span class="hl-var">ptr</span>;
+    <span class="hl-function">memcpy</span>(&(<span class="hl-var">mem</span>-><span class="hl-var">ptr</span>[<span class="hl-var">mem</span>-><span class="hl-var">len</span>]), <span class="hl-var">contents</span>, <span class="hl-var">realsize</span>);
+    <span class="hl-var">mem</span>-><span class="hl-var">len</span> += <span class="hl-var">realsize</span>;
+    <span class="hl-var">mem</span>-><span class="hl-var">ptr</span>[<span class="hl-var">mem</span>-><span class="hl-var">len</span>] = 0;
+    
+    <span class="hl-keyword">return</span> <span class="hl-var">realsize</span>;
+}</pre>
+                    </div>
+                </div>
+                
+                <div class="func-desc">
+                    <h4>init_curl()</h4>
+                    <p>Initializes a libcurl session with common configuration options.</p>
+                    <div class="params">
+                        <ul>
+                            <li>
+                                <span class="param-name">url</span>
+                                <span class="param-desc">API endpoint URL</span>
+                            </li>
+                            <li>
+                                <span class="param-name">buf</span>
+                                <span class="param-desc">Pointer to MemoryBuffer for response storage</span>
+                            </li>
+                            <li>
+                                <span class="param-name">username</span>
+                                <span class="param-desc">Authentication username (NULL for public endpoints)</span>
+                            </li>
+                            <li>
+                                <span class="param-name">password</span>
+                                <span class="param-desc">Authentication password (NULL for public endpoints)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">curl_utils.c</span>
+                        </div>
+                        <pre><span class="hl-comment">// Initialize libcurl with common options</span>
+<span class="hl-type">CURL</span>* <span class="hl-function">init_curl</span>(<span class="hl-keyword">const</span> <span class="hl-type">char</span>* <span class="hl-var">url</span>, <span class="hl-type">MemoryBuffer</span>* <span class="hl-var">buf</span>, <span class="hl-keyword">const</span> <span class="hl-type">char</span>* <span class="hl-var">username</span>, <span class="hl-keyword">const</span> <span class="hl-type">char</span>* <span class="hl-var">password</span>) {
+    <span class="hl-type">CURL</span> *<span class="hl-var">curl</span> = <span class="hl-function">curl_easy_init</span>();
+    <span class="hl-keyword">if</span>(!<span class="hl-var">curl</span>) <span class="hl-keyword">return</span> <span class="hl-keyword">NULL</span>;
+    
+    <span class="hl-function">curl_easy_setopt</span>(<span class="hl-var">curl</span>, <span class="hl-var">CURLOPT_URL</span>, <span class="hl-var">url</span>);
+    <span class="hl-function">curl_easy_setopt</span>(<span class="hl-var">curl</span>, <span class="hl-var">CURLOPT_WRITEFUNCTION</span>, <span class="hl-var">write_callback</span>);
+    <span class="hl-function">curl_easy_setopt</span>(<span class="hl-var">curl</span>, <span class="hl-var">CURLOPT_WRITEDATA</span>, <span class="hl-var">buf</span>);
+    <span class="hl-function">curl_easy_setopt</span>(<span class="hl-var">curl</span>, <span class="hl-var">CURLOPT_USERNAME</span>, <span class="hl-var">username</span>);
+    <span class="hl-function">curl_easy_setopt</span>(<span class="hl-var">curl</span>, <span class="hl-var">CURLOPT_PASSWORD</span>, <span class="hl-var">password</span>);
+    <span class="hl-function">curl_easy_setopt</span>(<span class="hl-var">curl</span>, <span class="hl-var">CURLOPT_HTTPAUTH</span>, <span class="hl-var">CURLAUTH_BASIC</span>);
+    <span class="hl-keyword">return</span> <span class="hl-var">curl</span>;
+}</pre>
+                    </div>
+                </div>
+                
+                <div class="func-desc">
+                    <h4>parse_license()</h4>
+                    <p>Parses a License structure from JSON response.</p>
+                    <div class="params">
+                        <ul>
+                            <li>
+                                <span class="param-name">json</span>
+                                <span class="param-desc">cJSON object containing license data</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">license.c</span>
+                        </div>
+                        <pre><span class="hl-comment">// Parse license from JSON response</span>
+<span class="hl-type">License</span> <span class="hl-function">parse_license</span>(<span class="hl-type">cJSON</span> *<span class="hl-var">json</span>) {
+    <span class="hl-type">License</span> <span class="hl-var">lic</span> = {0};
+    <span class="hl-type">cJSON</span> *<span class="hl-var">item</span>;
+    
+    <span class="hl-keyword">if</span>((<span class="hl-var">item</span> = <span class="hl-function">cJSON_GetObjectItem</span>(<span class="hl-var">json</span>, <span class="hl-string">"license_key"</span>)) && <span class="hl-var">item</span>-><span class="hl-var">valuestring</span>)
+        <span class="hl-var">lic</span>.<span class="hl-var">license_key</span> = <span class="hl-function">strdup</span>(<span class="hl-var">item</span>-><span class="hl-var">valuestring</span>);
+    <span class="hl-keyword">if</span>((<span class="hl-var">item</span> = <span class="hl-function">cJSON_GetObjectItem</span>(<span class="hl-var">json</span>, <span class="hl-string">"created_at"</span>)) && <span class="hl-var">item</span>-><span class="hl-var">valuestring</span>)
+        <span class="hl-var">lic</span>.<span class="hl-var">created_at</span> = <span class="hl-function">strdup</span>(<span class="hl-var">item</span>-><span class="hl-var">valuestring</span>);
+    <span class="hl-keyword">if</span>((<span class="hl-var">item</span> = <span class="hl-function">cJSON_GetObjectItem</span>(<span class="hl-var">json</span>, <span class="hl-string">"expires_at"</span>)) && <span class="hl-var">item</span>-><span class="hl-var">valuestring</span>)
+        <span class="hl-var">lic</span>.<span class="hl-var">expires_at</span> = <span class="hl-function">strdup</span>(<span class="hl-var">item</span>-><span class="hl-var">valuestring</span>);
+    <span class="hl-keyword">if</span>((<span class="hl-var">item</span> = <span class="hl-function">cJSON_GetObjectItem</span>(<span class="hl-var">json</span>, <span class="hl-string">"is_active"</span>)))
+        <span class="hl-var">lic</span>.<span class="hl-var">is_active</span> = <span class="hl-var">item</span>-><span class="hl-var">valueint</span>;
+    
+    <span class="hl-keyword">return</span> <span class="hl-var">lic</span>;
+}</pre>
+                    </div>
                 </div>
                 
                 <div class="func-desc">
                     <h4>create_license()</h4>
-                    <p>Create a new license (Admin only). Returns a License struct.</p>
+                    <p>Creates a new license (admin privileges required).</p>
                     <div class="params">
                         <ul>
                             <li>
@@ -593,24 +676,54 @@ success = create_user(<span class="hl-string">"admin"</span>, <span class="hl-st
                             </li>
                         </ul>
                     </div>
-                    
                     <div class="code-block">
                         <div class="code-header">
-                            <span class="filename">example.c</span>
+                            <span class="filename">license.c</span>
                         </div>
-                        <pre><span class="hl-comment">// Create a license valid for 1 year</span>
-<span class="hl-type">License</span> lic = <span class="hl-function">create_license</span>(<span class="hl-string">"admin"</span>, <span class="hl-string">"securepass"</span>, <span class="hl-var">365</span>, <span class="hl-var">0</span>);
-<span class="hl-function">printf</span>(<span class="hl-string">"Created license: %s\n"</span>, lic.license_key);
-<span class="hl-function">printf</span>(<span class="hl-string">"Expires at: %s\n"</span>, lic.expires_at);
-
-<span class="hl-comment">// Free memory when done</span>
-<span class="hl-function">free_license</span>(&lic);</pre>
+                        <pre><span class="hl-comment">// Create a new license (Admin only)</span>
+<span class="hl-type">License</span> <span class="hl-function">create_license</span>(<span class="hl-keyword">const</span> <span class="hl-type">char</span>* <span class="hl-var">username</span>, <span class="hl-keyword">const</span> <span class="hl-type">char</span>* <span class="hl-var">password</span>, <span class="hl-type">int</span> <span class="hl-var">duration_days</span>, <span class="hl-type">int</span> <span class="hl-var">user_id</span>) {
+    <span class="hl-type">char</span> <span class="hl-var">url</span>[256];
+    <span class="hl-function">snprintf</span>(<span class="hl-var">url</span>, <span class="hl-keyword">sizeof</span>(<span class="hl-var">url</span>), <span class="hl-string">"%s/licenses"</span>, <span class="hl-var">BASE_URL</span>);
+    
+    <span class="hl-type">MemoryBuffer</span> <span class="hl-var">buf</span> = {0};
+    <span class="hl-type">CURL</span> *<span class="hl-var">curl</span> = <span class="hl-function">init_curl</span>(<span class="hl-var">url</span>, &<span class="hl-var">buf</span>, <span class="hl-var">username</span>, <span class="hl-var">password</span>);
+    <span class="hl-keyword">if</span>(!<span class="hl-var">curl</span>) <span class="hl-keyword">return</span> (<span class="hl-type">License</span>){0};
+    
+    <span class="hl-comment">// Build JSON request</span>
+    <span class="hl-type">cJSON</span> *<span class="hl-var">req</span> = <span class="hl-function">cJSON_CreateObject</span>();
+    <span class="hl-function">cJSON_AddNumberToObject</span>(<span class="hl-var">req</span>, <span class="hl-string">"duration_days"</span>, <span class="hl-var">duration_days</span>);
+    <span class="hl-keyword">if</span>(<span class="hl-var">user_id</span> > 0) <span class="hl-function">cJSON_AddNumberToObject</span>(<span class="hl-var">req</span>, <span class="hl-string">"user_id"</span>, <span class="hl-var">user_id</span>);
+    <span class="hl-type">char</span> *<span class="hl-var">json_str</span> = <span class="hl-function">cJSON_Print</span>(<span class="hl-var">req</span>);
+    <span class="hl-function">cJSON_Delete</span>(<span class="hl-var">req</span>);
+    
+    <span class="hl-type">struct</span> <span class="hl-type">curl_slist</span> *<span class="hl-var">headers</span> = <span class="hl-keyword">NULL</span>;
+    <span class="hl-var">headers</span> = <span class="hl-function">curl_slist_append</span>(<span class="hl-var">headers</span>, <span class="hl-string">"Content-Type: application/json"</span>);
+    
+    <span class="hl-function">curl_easy_setopt</span>(<span class="hl-var">curl</span>, <span class="hl-var">CURLOPT_HTTPHEADER</span>, <span class="hl-var">headers</span>);
+    <span class="hl-function">curl_easy_setopt</span>(<span class="hl-var">curl</span>, <span class="hl-var">CURLOPT_POSTFIELDS</span>, <span class="hl-var">json_str</span>);
+    <span class="hl-function">curl_easy_setopt</span>(<span class="hl-var">curl</span>, <span class="hl-var">CURLOPT_POST</span>, 1L);
+    
+    <span class="hl-type">CURLcode</span> <span class="hl-var">res</span> = <span class="hl-function">curl_easy_perform</span>(<span class="hl-var">curl</span>);
+    <span class="hl-type">License</span> <span class="hl-var">license</span> = {0};
+    
+    <span class="hl-keyword">if</span>(<span class="hl-var">res</span> == <span class="hl-var">CURLE_OK</span>) {
+        <span class="hl-type">cJSON</span> *<span class="hl-var">json</span> = <span class="hl-function">cJSON_Parse</span>(<span class="hl-var">buf</span>.<span class="hl-var">ptr</span>);
+        <span class="hl-keyword">if</span>(<span class="hl-var">json</span>) <span class="hl-var">license</span> = <span class="hl-function">parse_license</span>(<span class="hl-var">json</span>);
+        <span class="hl-function">cJSON_Delete</span>(<span class="hl-var">json</span>);
+    }
+    
+    <span class="hl-function">free</span>(<span class="hl-var">json_str</span>);
+    <span class="hl-function">curl_slist_free_all</span>(<span class="hl-var">headers</span>);
+    <span class="hl-function">curl_easy_cleanup</span>(<span class="hl-var">curl</span>);
+    <span class="hl-function">free</span>(<span class="hl-var">buf</span>.<span class="hl-var">ptr</span>);
+    <span class="hl-keyword">return</span> <span class="hl-var">license</span>;
+}</pre>
                     </div>
                 </div>
                 
                 <div class="func-desc">
                     <h4>check_license()</h4>
-                    <p>Check license validity. Returns a License struct.</p>
+                    <p>Checks the validity of a license key.</p>
                     <div class="params">
                         <ul>
                             <li>
@@ -619,24 +732,38 @@ success = create_user(<span class="hl-string">"admin"</span>, <span class="hl-st
                             </li>
                         </ul>
                     </div>
-                    
                     <div class="code-block">
                         <div class="code-header">
-                            <span class="filename">example.c</span>
+                            <span class="filename">license.c</span>
                         </div>
-                        <pre><span class="hl-type">License</span> lic = <span class="hl-function">check_license</span>(<span class="hl-string">"LIC-12345-ABCDE"</span>);
-<span class="hl-keyword">if</span>(lic.is_active) {
-    <span class="hl-function">printf</span>(<span class="hl-string">"Valid license until %s\n"</span>, lic.expires_at);
-} <span class="hl-keyword">else</span> {
-    <span class="hl-function">printf</span>(<span class="hl-string">"License is inactive\n"</span>);
-}
-<span class="hl-function">free_license</span>(&lic);</pre>
+                        <pre><span class="hl-comment">// Check license validity</span>
+<span class="hl-type">License</span> <span class="hl-function">check_license</span>(<span class="hl-keyword">const</span> <span class="hl-type">char</span>* <span class="hl-var">license_key</span>) {
+    <span class="hl-type">char</span> <span class="hl-var">url</span>[256];
+    <span class="hl-function">snprintf</span>(<span class="hl-var">url</span>, <span class="hl-keyword">sizeof</span>(<span class="hl-var">url</span>), <span class="hl-string">"%s/licenses/%s"</span>, <span class="hl-var">BASE_URL</span>, <span class="hl-var">license_key</span>);
+    
+    <span class="hl-type">MemoryBuffer</span> <span class="hl-var">buf</span> = {0};
+    <span class="hl-type">CURL</span> *<span class="hl-var">curl</span> = <span class="hl-function">init_curl</span>(<span class="hl-var">url</span>, &<span class="hl-var">buf</span>, <span class="hl-keyword">NULL</span>, <span class="hl-keyword">NULL</span>);
+    <span class="hl-keyword">if</span>(!<span class="hl-var">curl</span>) <span class="hl-keyword">return</span> (<span class="hl-type">License</span>){0};
+    
+    <span class="hl-type">CURLcode</span> <span class="hl-var">res</span> = <span class="hl-function">curl_easy_perform</span>(<span class="hl-var">curl</span>);
+    <span class="hl-type">License</span> <span class="hl-var">license</span> = {0};
+    
+    <span class="hl-keyword">if</span>(<span class="hl-var">res</span> == <span class="hl-var">CURLE_OK</span>) {
+        <span class="hl-type">cJSON</span> *<span class="hl-var">json</span> = <span class="hl-function">cJSON_Parse</span>(<span class="hl-var">buf</span>.<span class="hl-var">ptr</span>);
+        <span class="hl-keyword">if</span>(<span class="hl-var">json</span>) <span class="hl-var">license</span> = <span class="hl-function">parse_license</span>(<span class="hl-var">json</span>);
+        <span class="hl-function">cJSON_Delete</span>(<span class="hl-var">json</span>);
+    }
+    
+    <span class="hl-function">curl_easy_cleanup</span>(<span class="hl-var">curl</span>);
+    <span class="hl-function">free</span>(<span class="hl-var">buf</span>.<span class="hl-var">ptr</span>);
+    <span class="hl-keyword">return</span> <span class="hl-var">license</span>;
+}</pre>
                     </div>
                 </div>
                 
                 <div class="func-desc">
                     <h4>create_user()</h4>
-                    <p>Create a new user (Admin only). Returns 1 on success.</p>
+                    <p>Creates a new user (admin privileges required).</p>
                     <div class="params">
                         <ul>
                             <li>
@@ -661,18 +788,74 @@ success = create_user(<span class="hl-string">"admin"</span>, <span class="hl-st
                             </li>
                         </ul>
                     </div>
-                    
                     <div class="code-block">
                         <div class="code-header">
-                            <span class="filename">example.c</span>
+                            <span class="filename">user.c</span>
                         </div>
-                        <pre><span class="hl-keyword">int</span> result = <span class="hl-function">create_user</span>(<span class="hl-string">"admin"</span>, <span class="hl-string">"securepass"</span>,
-                          <span class="hl-string">"newuser"</span>, <span class="hl-string">"userpass"</span>, <span class="hl-var">0</span>);
-                          
-<span class="hl-keyword">if</span>(result) {
-    <span class="hl-function">printf</span>(<span class="hl-string">"User created successfully\n"</span>);
-} <span class="hl-keyword">else</span> {
-    <span class="hl-function">printf</span>(<span class="hl-string">"User creation failed\n"</span>);
+                        <pre><span class="hl-comment">// Create new user (Admin only)</span>
+<span class="hl-type">int</span> <span class="hl-function">create_user</span>(<span class="hl-keyword">const</span> <span class="hl-type">char</span>* <span class="hl-var">admin_user</span>, <span class="hl-keyword">const</span> <span class="hl-type">char</span>* <span class="hl-var">admin_pass</span>, <span class="hl-keyword">const</span> <span class="hl-type">char</span>* <span class="hl-var">username</span>, <span class="hl-keyword">const</span> <span class="hl-type">char</span>* <span class="hl-var">password</span>, <span class="hl-type">int</span> <span class="hl-var">is_admin</span>) {
+    <span class="hl-type">char</span> <span class="hl-var">url</span>[256];
+    <span class="hl-function">snprintf</span>(<span class="hl-var">url</span>, <span class="hl-keyword">sizeof</span>(<span class="hl-var">url</span>), <span class="hl-string">"%s/users"</span>, <span class="hl-var">BASE_URL</span>);
+    
+    <span class="hl-type">MemoryBuffer</span> <span class="hl-var">buf</span> = {0};
+    <span class="hl-type">CURL</span> *<span class="hl-var">curl</span> = <span class="hl-function">init_curl</span>(<span class="hl-var">url</span>, &<span class="hl-var">buf</span>, <span class="hl-var">admin_user</span>, <span class="hl-var">admin_pass</span>);
+    <span class="hl-keyword">if</span>(!<span class="hl-var">curl</span>) <span class="hl-keyword">return</span> 0;
+    
+    <span class="hl-comment">// Build JSON request</span>
+    <span class="hl-type">cJSON</span> *<span class="hl-var">req</span> = <span class="hl-function">cJSON_CreateObject</span>();
+    <span class="hl-function">cJSON_AddStringToObject</span>(<span class="hl-var">req</span>, <span class="hl-string">"username"</span>, <span class="hl-var">username</span>);
+    <span class="hl-function">cJSON_AddStringToObject</span>(<span class="hl-var">req</span>, <span class="hl-string">"password"</span>, <span class="hl-var">password</span>);
+    <span class="hl-function">cJSON_AddBoolToObject</span>(<span class="hl-var">req</span>, <span class="hl-string">"is_admin"</span>, <span class="hl-var">is_admin</span>);
+    <span class="hl-type">char</span> *<span class="hl-var">json_str</span> = <span class="hl-function">cJSON_Print</span>(<span class="hl-var">req</span>);
+    <span class="hl-function">cJSON_Delete</span>(<span class="hl-var">req</span>);
+    
+    <span class="hl-type">struct</span> <span class="hl-type">curl_slist</span> *<span class="hl-var">headers</span> = <span class="hl-keyword">NULL</span>;
+    <span class="hl-var">headers</span> = <span class="hl-function">curl_slist_append</span>(<span class="hl-var">headers</span>, <span class="hl-string">"Content-Type: application/json"</span>);
+    
+    <span class="hl-function">curl_easy_setopt</span>(<span class="hl-var">curl</span>, <span class="hl-var">CURLOPT_HTTPHEADER</span>, <span class="hl-var">headers</span>);
+    <span class="hl-function">curl_easy_setopt</span>(<span class="hl-var">curl</span>, <span class="hl-var">CURLOPT_POSTFIELDS</span>, <span class="hl-var">json_str</span>);
+    <span class="hl-function">curl_easy_setopt</span>(<span class="hl-var">curl</span>, <span class="hl-var">CURLOPT_POST</span>, 1L);
+    
+    <span class="hl-type">CURLcode</span> <span class="hl-var">res</span> = <span class="hl-function">curl_easy_perform</span>(<span class="hl-var">curl</span>);
+    <span class="hl-type">int</span> <span class="hl-var">success</span> = 0;
+    
+    <span class="hl-keyword">if</span>(<span class="hl-var">res</span> == <span class="hl-var">CURLE_OK</span>) {
+        <span class="hl-type">long</span> <span class="hl-var">http_code</span> = 0;
+        <span class="hl-function">curl_easy_getinfo</span>(<span class="hl-var">curl</span>, <span class="hl-var">CURLINFO_RESPONSE_CODE</span>, &<span class="hl-var">http_code</span>);
+        <span class="hl-var">success</span> = (<span class="hl-var">http_code</span> == 201);
+    }
+    
+    <span class="hl-function">free</span>(<span class="hl-var">json_str</span>);
+    <span class="hl-function">curl_slist_free_all</span>(<span class="hl-var">headers</span>);
+    <span class="hl-function">curl_easy_cleanup</span>(<span class="hl-var">curl</span>);
+    <span class="hl-function">free</span>(<span class="hl-var">buf</span>.<span class="hl-var">ptr</span>);
+    <span class="hl-keyword">return</span> <span class="hl-var">success</span>;
+}</pre>
+                    </div>
+                </div>
+                
+                <div class="func-desc">
+                    <h4>free_license()</h4>
+                    <p>Releases memory allocated for a License object.</p>
+                    <div class="params">
+                        <ul>
+                            <li>
+                                <span class="param-name">lic</span>
+                                <span class="param-desc">Pointer to License structure</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">license.c</span>
+                        </div>
+                        <pre><span class="hl-comment">// Free license memory</span>
+<span class="hl-keyword">void</span> <span class="hl-function">free_license</span>(<span class="hl-type">License</span> *<span class="hl-var">lic</span>) {
+    <span class="hl-keyword">if</span>(!<span class="hl-var">lic</span>) <span class="hl-keyword">return</span>;
+    <span class="hl-function">free</span>(<span class="hl-var">lic</span>-><span class="hl-var">license_key</span>);
+    <span class="hl-function">free</span>(<span class="hl-var">lic</span>-><span class="hl-var">created_at</span>);
+    <span class="hl-function">free</span>(<span class="hl-var">lic</span>-><span class="hl-var">expires_at</span>);
+    <span class="hl-function">memset</span>(<span class="hl-var">lic</span>, 0, <span class="hl-keyword">sizeof</span>(<span class="hl-type">License</span>));
 }</pre>
                     </div>
                 </div>
@@ -680,101 +863,32 @@ success = create_user(<span class="hl-string">"admin"</span>, <span class="hl-st
         </section>
 
         <section>
-            <h2 class="section-title">Security Best Practices</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3><i class="fas fa-shield-alt"></i> Credential Security</h3>
-                    <ul>
-                        <li>Never hardcode credentials in your application</li>
-                        <li>Use environment variables for sensitive data</li>
-                        <li>Implement secure credential storage mechanisms</li>
-                        <li>Rotate API credentials regularly</li>
-                    </ul>
-                </div>
+            <h2 class="section-title">Memory Management Guidelines</h2>
+            <div class="card">
+                <h3><i class="fas fa-memory"></i> Resource Management Best Practices</h3>
+                <ul>
+                    <li>Always call <span class="highlight">free_license()</span> for License objects returned by API functions</li>
+                    <li>MemoryBuffer structures must be freed using <span class="highlight">free(buf.ptr)</span></li>
+                    <li>CURL handles must be cleaned up with <span class="highlight">curl_easy_cleanup()</span></li>
+                    <li>cJSON objects must be freed with <span class="highlight">cJSON_Delete()</span></li>
+                    <li>HTTP headers must be freed with <span class="highlight">curl_slist_free_all()</span></li>
+                    <li>Always check for NULL pointers before freeing memory</li>
+                </ul>
                 
-                <div class="card">
-                    <h3><i class="fas fa-memory"></i> Memory Management</h3>
-                    <ul>
-                        <li>Always call <span class="highlight">free_license()</span> after use</li>
-                        <li>Check for NULL pointers before use</li>
-                        <li>Validate all input parameters</li>
-                        <li>Handle memory allocation failures gracefully</li>
-                    </ul>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">Proper Resource Cleanup Example</span>
+                    </div>
+                    <pre><span class="hl-type">License</span> <span class="hl-var">lic</span> = <span class="hl-function">check_license</span>(<span class="hl-string">"LIC-12345"</span>);
+
+<span class="hl-comment">// Use license data...</span>
+<span class="hl-keyword">if</span>(<span class="hl-var">lic</span>.<span class="hl-var">is_active</span>) {
+    <span class="hl-function">printf</span>(<span class="hl-string">"Valid until %s\n"</span>, <span class="hl-var">lic</span>.<span class="hl-var">expires_at</span>);
+}
+
+<span class="hl-comment">// Proper cleanup</span>
+<span class="hl-function">free_license</span>(&<span class="hl-var">lic</span>);</pre>
                 </div>
-                
-                <div class="card">
-                    <h3><i class="fas fa-network-wired"></i> Network Security</h3>
-                    <ul>
-                        <li>Always use HTTPS for API communication</li>
-                        <li>Verify server certificates</li>
-                        <li>Implement request timeout handling</li>
-                        <li>Use secure connection protocols (TLS 1.2+)</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title">Python SDK Structure</h2>
-            <div class="code-block">
-                <div class="code-header">
-                    <span class="filename">cryptolion.py</span>
-                </div>
-                <pre><span class="hl-keyword">import</span> ctypes
-<span class="hl-keyword">import</span> os
-<span class="hl-keyword">import</span> sys
-
-<span class="hl-comment"># Define the License structure</span>
-<span class="hl-keyword">class</span> License(ctypes.Structure):
-    _fields_ = [
-        (<span class="hl-string">"license_key"</span>, ctypes.c_char_p),
-        (<span class="hl-string">"created_at"</span>, ctypes.c_char_p),
-        (<span class="hl-string">"expires_at"</span>, ctypes.c_char_p),
-        (<span class="hl-string">"is_active"</span>, ctypes.c_int)
-    ]
-
-<span class="hl-comment"># Load the shared library</span>
-<span class="hl-keyword">def</span> <span class="hl-function">load_library</span>():
-    <span class="hl-comment"># Platform-specific library loading</span>
-    <span class="hl-keyword">if</span> sys.platform.startswith(<span class="hl-string">'win'</span>):
-        lib_name = <span class="hl-string">"LibLion64.dll"</span>
-    <span class="hl-keyword">elif</span> sys.platform == <span class="hl-string">'darwin'</span>:
-        lib_name = <span class="hl-string">"LibLion.dylib"</span>
-    <span class="hl-keyword">else</span>:
-        lib_name = <span class="hl-string">"LibLion.so"</span>
-    
-    <span class="hl-keyword">try</span>:
-        <span class="hl-keyword">return</span> ctypes.CDLL(lib_name)
-    <span class="hl-keyword">except</span> OSError:
-        lib_path = os.path.join(os.path.dirname(__file__), lib_name)
-        <span class="hl-keyword">return</span> ctypes.CDLL(lib_path)
-
-lib = <span class="hl-function">load_library</span>()
-
-<span class="hl-comment"># Set function prototypes</span>
-lib.<span class="hl-function">create_license</span>.argtypes = [ctypes.c_char_p, ctypes.c_char_p, 
-                               ctypes.c_int, ctypes.c_int]
-lib.<span class="hl-function">create_license</span>.restype = License
-
-<span class="hl-comment"># Python wrapper for create_license</span>
-<span class="hl-keyword">def</span> <span class="hl-function">create_license</span>(username, password, duration_days, user_id=0):
-    lic = lib.<span class="hl-function">create_license</span>(
-        username.<span class="hl-function">encode</span>(<span class="hl-string">'utf-8'</span>),
-        password.<span class="hl-function">encode</span>(<span class="hl-string">'utf-8'</span>),
-        duration_days,
-        user_id
-    )
-    
-    result = {
-        <span class="hl-string">'license_key'</span>: lic.license_key.<span class="hl-function">decode</span>() <span class="hl-keyword">if</span> lic.license_key <span class="hl-keyword">else</span> <span class="hl-keyword">None</span>,
-        <span class="hl-string">'created_at'</span>: lic.created_at.<span class="hl-function">decode</span>() <span class="hl-keyword">if</span> lic.created_at <span class="hl-keyword">else</span> <span class="hl-keyword">None</span>,
-        <span class="hl-string">'expires_at'</span>: lic.expires_at.<span class="hl-function">decode</span>() <span class="hl-keyword">if</span> lic.expires_at <span class="hl-keyword">else</span> <span class="hl-keyword">None</span>,
-        <span class="hl-string">'is_active'</span>: <span class="hl-keyword">bool</span>(lic.is_active)
-    }
-    
-    <span class="hl-comment"># Free C memory</span>
-    lib.<span class="hl-function">free_license</span>(ctypes.<span class="hl-function">byref</span>(lic))
-    <span class="hl-keyword">return</span> result</pre>
             </div>
         </section>
 
